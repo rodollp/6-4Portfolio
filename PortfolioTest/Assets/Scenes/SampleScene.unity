@@ -547,6 +547,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5706601061590182995, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
+      propertyPath: height
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706601061590182995, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
+      propertyPath: distance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5706601061590182995, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 330585546}
+    - target: {fileID: 5706601061590182995, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
+      propertyPath: mouseSensitivity
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 6739904211450367984, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -587,6 +603,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7648702040214867250, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648702040214867250, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 330585546}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
