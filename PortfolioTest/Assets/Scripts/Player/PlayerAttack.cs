@@ -10,11 +10,11 @@ public class PlayerAttack : MonoBehaviour
     [Header("밀치는 힘")]
     [SerializeField] private float attackForce = 5f;
 
-    
+
 
     private void Update()
     {
-        if(Mouse.current != null)
+        if (Mouse.current != null)
         {
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
@@ -23,7 +23,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
 
-        
+
 
 
     }
@@ -33,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
         if (!IsInRangeTarget()) return;
 
         KnockBack();
-        
+
     }
 
     private void KnockBack()
@@ -41,7 +41,7 @@ public class PlayerAttack : MonoBehaviour
         // 몬스터가 Rigidbody를 가지게 만들고 
         Rigidbody rb = target.GetComponent<Rigidbody>();
 
-        if(rb != null )
+        if (rb != null)
         {
             // 플레이어 방향 >> 몬스터 방향 의 정규화
             Vector3 dir = (target.position - transform.position).normalized;
@@ -50,7 +50,7 @@ public class PlayerAttack : MonoBehaviour
             //방향을 살짝 위로
             push.y = 1f;
 
-            rb.AddForce(push,ForceMode.Impulse);    
+            rb.AddForce(push, ForceMode.Impulse);
         }
 
     }
@@ -68,11 +68,26 @@ public class PlayerAttack : MonoBehaviour
         float inRange = distance.sqrMagnitude;
 
         // 제곱의 거리가 범위 안에 있으면 True
-        return inRange <= attackRange*attackRange;
+        return inRange <= attackRange * attackRange;
 
     }
 
-    
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        if (target == null) return;
+
+        float sqrDist =
+            (target.position - transform.position).sqrMagnitude;
+
+        Gizmos.color =
+            sqrDist < attackRange * attackRange
+            ? Color.red
+            : Color.yellow;
+
+        Gizmos.DrawLine(transform.position, target.position);
+    }
 
 }
