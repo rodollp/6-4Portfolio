@@ -3,91 +3,104 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [Header("타겟 설정 : 몬스터")]
-    [SerializeField] Transform target;
     [Header("공격 범위 설정")]
-    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float attackDistance = 1f;
     [Header("밀치는 힘")]
     [SerializeField] private float attackForce = 5f;
+    [Header("구의 반지름")]
+    [SerializeField] private float radius = 0.5f;
 
 
+    PlayerStatus playerStatus;
+
+    private void Awake()
+    {
+        playerStatus = GetComponent<PlayerStatus>();
+    }
 
     private void Update()
     {
+        
+
         if (Mouse.current != null)
         {
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                Attack();
+                CommounAttack();
 
             }
         }
-
-
-
+        
 
     }
 
-    private void Attack()
+   
+
+    private void CommounAttack()
     {
-        if (!IsInRangeTarget()) return;
+        //플레이어 위치에서 반지름 radius 만큼의 구로 attackDistance만큼의 거리상 플레이어 정면에 있는것이 없으면 리턴
+        if (!Physics.SphereCast(transform.position,radius,transform.forward,out RaycastHit hit,attackDistance))
+            return;
 
-        KnockBack();
+        //맞았으면 이놈이 몬스터스테이터스를 가지고 있는지
+        MonsterStatus status =
+            hit.transform.GetComponent<MonsterStatus>();
 
+        if (status == null)
+            return;
+
+        status.TakeDamage(playerStatus.Atk);
+
+        Rigidbody rb =
+            hit.transform.GetComponent<Rigidbody>();
+
+        KnockBack(rb);
     }
 
-    private void KnockBack()
+    private void KnockBack(Rigidbody rb)
     {
-        // 몬스터가 Rigidbody를 가지게 만들고 
-        Rigidbody rb = target.GetComponent<Rigidbody>();
+        if (rb == null)
+            return;
 
-        if (rb != null)
-        {
-            // 플레이어 방향 >> 몬스터 방향 의 정규화
-            Vector3 dir = (target.position - transform.position).normalized;
-            // 물리력 만큼 뒤로 밀림
-            Vector3 push = dir * attackForce;
-            //방향을 살짝 위로
-            push.y = 1f;
+        Vector3 dir =
+            (rb.transform.position - transform.position)
+            .normalized;
 
-            rb.AddForce(push, ForceMode.Impulse);
-        }
+        Vector3 push = dir * attackForce;
+        push.y = 1f;
 
+        rb.AddForce(push, ForceMode.Impulse);
     }
 
-    // 플레이어의 공격 범위 내에 있는지 확인
-    private bool IsInRangeTarget()
-    {
-        if (target == null)
-        {
-            return false;
-        }
 
-        //플레이어와 몬스터의 거리를 sqrMagnitude를 이용하여 제곱 거리를 확인
-        Vector3 distance = transform.position - target.position;
-        float inRange = distance.sqrMagnitude;
 
-        // 제곱의 거리가 범위 안에 있으면 True
-        return inRange <= attackRange * attackRange;
-
-    }
 
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        // 플레이어 정면
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(
+            transform.position,
+            transform.position + transform.forward * 3f);
 
-        if (target == null) return;
+        // SphereCast 범위
+        Gizmos.color = Color.red;
 
-        float sqrDist =
-            (target.position - transform.position).sqrMagnitude;
+        Vector3 endPos =
+            transform.position +
+            transform.forward * attackDistance;
 
-        Gizmos.color =
-            sqrDist < attackRange * attackRange
-            ? Color.red
-            : Color.yellow;
+        Gizmos.DrawWireSphere(
+            transform.position,
+            radius);
 
-        Gizmos.DrawLine(transform.position, target.position);
+        Gizmos.DrawWireSphere(
+            endPos,
+            radius);
+
+        Gizmos.DrawLine(
+            transform.position,
+            endPos);
     }
-
 }

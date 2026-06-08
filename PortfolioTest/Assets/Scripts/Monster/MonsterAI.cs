@@ -4,10 +4,10 @@ using UnityEngine;
 public class MonsterAI : MonoBehaviour
 {
     [Header("플레이어")]
-    [SerializeField] Transform player;
+    [SerializeField] protected Transform player;
 
     [Header("몬스터 눈 위치")]
-    [SerializeField] Transform eyePoint;
+    [SerializeField] protected Transform eyePoint;
 
     [Header("이동 속도")]
     [SerializeField] float moveSpeed = 3f;
@@ -22,7 +22,7 @@ public class MonsterAI : MonoBehaviour
     [SerializeField] float attackRange = 2f;
     float attackTimer = 0;
     float coolDown = 1f;
-    private enum MonsterState
+    protected enum MonsterState
     {
         Idle,
         Chase,
@@ -30,11 +30,16 @@ public class MonsterAI : MonoBehaviour
 
     }
 
-    MonsterState currentState = MonsterState.Idle;
+   protected MonsterState currentState = MonsterState.Idle;
 
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
     private void Update()
     {
-        switch(currentState)
+        
+        switch (currentState)
         {
             case MonsterState.Idle:
                 Idle();
@@ -50,7 +55,7 @@ public class MonsterAI : MonoBehaviour
 
     }
 
-    bool CanSeePlayer()
+    protected virtual bool CanSeePlayer()
     {
         Vector3 toPlayer =
             (player.position - eyePoint.position).normalized;
@@ -69,21 +74,21 @@ public class MonsterAI : MonoBehaviour
 
         return dot >= limitDot;
     }
-    bool IsInAttackRange()
+  protected virtual bool IsInAttackRange()
     {
         float distance =
             (player.position - transform.position).sqrMagnitude;
 
         return distance < attackRange * attackRange;
     }
-    void MoveToPlayer()
+    protected virtual void MoveToPlayer()
     {
         transform.position +=
             transform.forward *
             moveSpeed *
             Time.deltaTime;
     }
-    void LookPlayer()
+    protected virtual void LookPlayer()
     {
         Vector3 dir =
             player.position - transform.position;
@@ -100,14 +105,15 @@ public class MonsterAI : MonoBehaviour
                 5f * Time.deltaTime
             );
     }
-    void Idle()
+    protected virtual void Idle()
     {
+        
         if (CanSeePlayer())
         {
             currentState = MonsterState.Chase;
         }
     }
-    void Chase()
+    protected virtual void Chase()
     {
         LookPlayer();
 
@@ -124,7 +130,7 @@ public class MonsterAI : MonoBehaviour
             currentState = MonsterState.Idle;
         }
     }
-    void Attack()
+    protected virtual void Attack()
     {
         
         LookPlayer();
@@ -137,22 +143,19 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    void MonsterAttack()
+    protected virtual void MonsterAttack()
     {
-
-        
+        MonsterStatus status = transform.GetComponent<MonsterStatus>(); 
 
         attackTimer += Time.deltaTime;
-
-        
 
         if (attackTimer >= coolDown)
         {
             attackTimer = 0f;
-            Debug.Log("몬스터의 공격!");
+            Debug.Log($"{status.Name}의 공격");
         }
     }
-    private void OnDrawGizmos()
+    protected void OnDrawGizmos()
     {
         if (eyePoint == null)
             return;

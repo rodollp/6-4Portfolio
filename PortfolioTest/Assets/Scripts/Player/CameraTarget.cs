@@ -5,6 +5,8 @@ public class CameraTarget : MonoBehaviour
 {
     [Header("카메라 기준 타겟 (플레이어 머리)")]
     [SerializeField] Transform cameraTarget;
+    [Header("플레이어 설정")]
+    [SerializeField] Transform player;
 
     [Header("실제 카메라 Transform")]
     [SerializeField] Transform cameraTransform;
@@ -50,6 +52,7 @@ public class CameraTarget : MonoBehaviour
 
         // ===== 2. 회전값 생성 =====
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
+        player.rotation = Quaternion.Euler(0,yaw,0);
 
         // ===== 3. 카메라 뒤로 밀기 =====
         Vector3 offset = rotation * new Vector3(0, 0, -distance);
