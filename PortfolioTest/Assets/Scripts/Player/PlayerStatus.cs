@@ -1,10 +1,21 @@
 using UnityEngine;
 
-public class PlayerStatus : Creture
+public class PlayerStatus : Creature
 {
-    public int level = 1;
-    public int exp = 0;
-    public int expToNext = 10;
+    [SerializeField] private int level = 1;
+    [SerializeField] private int exp = 0;
+    [SerializeField] private int expToNext = 10;
+    [SerializeField] private int money = 0;
+
+    public int Level => level;
+    public int Exp => exp;
+    public int ExpToNext => expToNext;
+
+    public int Money => money;
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     public void AddExp(int amount)
     {
@@ -16,11 +27,20 @@ public class PlayerStatus : Creture
         }
     }
 
+    public void AddGold(int amount)
+    {
+        money += amount;
+    }
+
     void LevelUp()
     {
         level++;
         exp -= expToNext;
         expToNext += 5;
+
+        maxHp += 3;
+        currentHp += 3;
+        atk += 3;
 
         Debug.Log("Level Up! " + level);
     }

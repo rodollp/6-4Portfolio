@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Creture : MonoBehaviour
+public class Creature : MonoBehaviour
 {
     [Header(" 이름")]
     [SerializeField] protected string _name;
@@ -10,18 +10,24 @@ public class Creture : MonoBehaviour
     [Header(" 공격력")]
     [SerializeField] protected int atk = 10;
 
+    
 
+    protected int currentHp;
     public string Name => _name;
     public int MaxHp => maxHp;
+    public int CurrentHp => currentHp;
     public int Atk => atk;
 
-
+    protected virtual void Awake()
+    {
+        currentHp = maxHp;
+    }
 
     public virtual void TakeDamage(int damage)
     {
-        maxHp -= damage;
+        currentHp -= damage;
         Debug.Log($"{Name}이(가) {damage}만큼 피해를 입었습니다");
-        if (maxHp <= 0)
+        if (currentHp <= 0)
         {
             Die();
         }
@@ -31,7 +37,7 @@ public class Creture : MonoBehaviour
 
     protected virtual void Die()
     {
-        maxHp = 0;
+        currentHp = 0;
         Debug.Log($"{Name} 사망");
         Destroy(gameObject);
 

@@ -6,16 +6,13 @@ public struct Reward
     public int _gold;
     public int _expReward;
 
-    public Reward(int gold, int expReward)
-    {
-        _gold = gold;
-        _expReward = expReward;
-    }
+    public int Gold => _gold;
+    public int ExpReward => _expReward;
 }
 
 
 
-public class MonsterStatus : Creture
+public class MonsterStatus : Creature
 {
 
     [Header("몬스터 처치 시 드랍")]
@@ -25,28 +22,17 @@ public class MonsterStatus : Creture
 
     public event Action<MonsterStatus> OnDead;
 
-    int currentHp;
-
-    private void Awake()
-    {
-        currentHp = maxHp;
-    }
-
+    public bool IsDead = false;
     public override void TakeDamage(int damage)
     {
-        currentHp -= damage;
-        Debug.Log($"{Name}이(가) {damage}만큼 피해를 입었습니다");
-        if (currentHp <= 0)
-        {
-            Die();
-        }
+       base.TakeDamage(damage);
 
     }
 
     protected override void Die()
     {
-        StageManager stage = FindAnyObjectByType<StageManager>();
-        stage.OnMonsterDead();
+        if (IsDead) return;
+        IsDead = true;
         currentHp = 0;
         Debug.Log($"{Name} 사망");
 
