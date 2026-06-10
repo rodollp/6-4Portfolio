@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Monster
 {
-    internal class SlimeAI : MonsterAI
+    public class SlimeAI : MonsterAI
     {
     }
 }

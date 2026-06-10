@@ -45,6 +45,21 @@ public class PlayerStatus : Creature
         Debug.Log("Level Up! " + level);
     }
 
+    public override void TakeDamage(int damage)
+    {
+        currentHp -= damage;
+
+        if (currentHp < 0)
+            currentHp = 0;
+
+        Debug.Log($"플레이어가 {damage} 피해를 받음 / 남은 HP: {currentHp}");
+
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
     protected override void Die()
     {
         Debug.Log("게임 오버");

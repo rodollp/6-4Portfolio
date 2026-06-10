@@ -8,6 +8,9 @@ public class StageManager : MonoBehaviour
     [Header("현재 스테이지")]
     public int stageIndex = 0;
 
+    [SerializeField] Transform startPoint;
+    [SerializeField] Transform player;
+
     [Header("현재 살아있는 몬스터")]
     public List<MonsterStatus> aliveMonsters = new();
 
@@ -22,6 +25,13 @@ public class StageManager : MonoBehaviour
 
         aliveMonsters.Clear();
 
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.position = startPoint.position;
+        rb.rotation = startPoint.rotation;
         // 스테이지 시작 시 스폰 요청
         spawnManager.Spawn(stageIndex);
     }
@@ -71,7 +81,7 @@ public class StageManager : MonoBehaviour
                 return;
             }
 
-            Debug.Log("스테이지 클리어!");
+            Debug.Log($"스테이지 클리어! 다음 스테이지 : {stageIndex+1}");
             
             StartStage(stageIndex + 1);
         }

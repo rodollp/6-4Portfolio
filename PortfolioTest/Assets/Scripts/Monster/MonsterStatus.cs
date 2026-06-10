@@ -25,8 +25,17 @@ public class MonsterStatus : Creature
     public bool IsDead = false;
     public override void TakeDamage(int damage)
     {
-       base.TakeDamage(damage);
+        currentHp -= damage;
 
+        if (currentHp < 0)
+            currentHp = 0;
+
+        Debug.Log($"{Name}이(가) {damage} 피해를 받음 / 남은 HP: {currentHp}");
+
+        if (currentHp <= 0)
+        {
+            Die();
+        }
     }
 
     protected override void Die()

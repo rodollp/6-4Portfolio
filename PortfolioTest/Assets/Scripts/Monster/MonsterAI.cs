@@ -30,25 +30,31 @@ public class MonsterAI : MonoBehaviour
 
     }
 
-   protected MonsterState currentState = MonsterState.Idle;
+    protected MonsterState currentState = MonsterState.Idle;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        PlayerStatus playerStatus = FindAnyObjectByType<PlayerStatus>();
+
+        if (playerStatus != null)
+        {
+            player = playerStatus.transform;
+        }
     }
-    private void Update()
+    protected virtual void Update()
     {
         
+
         switch (currentState)
         {
             case MonsterState.Idle:
                 Idle();
                 break;
-                case MonsterState.Chase:
+            case MonsterState.Chase:
                 Chase();
                 break;
-                case MonsterState.Attack: 
-                Attack(); 
+            case MonsterState.Attack:
+                Attack();
                 break;
 
         }
@@ -74,7 +80,7 @@ public class MonsterAI : MonoBehaviour
 
         return dot >= limitDot;
     }
-  protected virtual bool IsInAttackRange()
+    protected virtual bool IsInAttackRange()
     {
         float distance =
             (player.position - transform.position).sqrMagnitude;
@@ -90,24 +96,19 @@ public class MonsterAI : MonoBehaviour
     }
     protected virtual void LookPlayer()
     {
-        Vector3 dir =
-            player.position - transform.position;
+        Vector3 dir =player.position - transform.position;
 
         dir.y = 0;
 
-        Quaternion targetRot =
-            Quaternion.LookRotation(dir);
+        if(dir == Vector3.zero) return;
 
-        transform.rotation =
-            Quaternion.Slerp(
-                transform.rotation,
-                targetRot,
-                5f * Time.deltaTime
-            );
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 5f * Time.deltaTime);
     }
     protected virtual void Idle()
     {
-        
+
         if (CanSeePlayer())
         {
             currentState = MonsterState.Chase;
@@ -130,14 +131,19 @@ public class MonsterAI : MonoBehaviour
             currentState = MonsterState.Idle;
         }
     }
+
     protected virtual void Attack()
     {
-        
         LookPlayer();
 
         MonsterAttack();
 
-        if (!IsInAttackRange())
+        float exitAttackRange = attackRange + 1f;
+
+        float distance =
+            (player.position - transform.position).sqrMagnitude;
+
+        if (distance > exitAttackRange * exitAttackRange)
         {
             currentState = MonsterState.Chase;
         }
@@ -145,14 +151,18 @@ public class MonsterAI : MonoBehaviour
 
     protected virtual void MonsterAttack()
     {
-        MonsterStatus status = transform.GetComponent<MonsterStatus>(); 
+        MonsterStatus status = GetComponent<MonsterStatus>();
 
         attackTimer += Time.deltaTime;
 
         if (attackTimer >= coolDown)
         {
             attackTimer = 0f;
-            Debug.Log($"{status.Name}ÀÇ °ø°Ý");
+            PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
+            if (playerStatus != null)
+            {
+                playerStatus.TakeDamage(status.Atk);
+            }
         }
     }
     protected void OnDrawGizmos()

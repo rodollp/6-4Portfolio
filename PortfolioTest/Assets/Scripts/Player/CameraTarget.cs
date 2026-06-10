@@ -66,11 +66,7 @@ public class CameraTarget : MonoBehaviour
         // ===== 6. 항상 타겟을 바라보게 설정 =====
         cameraTransform.LookAt(focusPoint);
 
-        cameraTransform.position = Vector3.Lerp(
-        cameraTransform.position,
-        focusPoint + offset,
-        10f * Time.deltaTime
-       );
+        cameraTransform.position = Vector3.Lerp(cameraTransform.position, focusPoint + offset, 10f * Time.deltaTime);
 
 
 
