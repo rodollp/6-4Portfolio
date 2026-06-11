@@ -43,7 +43,6 @@ public class SpawnManager : MonoBehaviour
             rooms.Add(room);
         }
 
-        Debug.Log($"수집된 룸 수: {rooms.Count}");
     }
 
     //Room에 있는 SpawnPoint를 랜덤으로 선택
@@ -58,7 +57,7 @@ public class SpawnManager : MonoBehaviour
         return point;
     }
 
-    void SpawnMonsterGetEvent(Monster monster)
+    void RegisterMonsterEvent(Monster monster)
     {
         if (monster == null) return;
         stageManager.AddMonster(monster);
@@ -92,7 +91,7 @@ public class SpawnManager : MonoBehaviour
 
             Monster bossMonster = boss.GetComponent<Monster>();
            
-            SpawnMonsterGetEvent(bossMonster);
+            RegisterMonsterEvent(bossMonster);
 
 
             return;
@@ -111,7 +110,7 @@ public class SpawnManager : MonoBehaviour
             GameObject mon = Instantiate(monster, point.position, Quaternion.identity, monstersParent);
             Monster spawnMonster = mon.GetComponent<Monster>();
 
-            SpawnMonsterGetEvent(spawnMonster);
+            RegisterMonsterEvent(spawnMonster);
         }
 
 

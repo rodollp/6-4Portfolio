@@ -31,7 +31,6 @@ public class PathFinder : MonoBehaviour
         //rooms에 모든 룸 노드를 넣기
         rooms.AddRange(found);
 
-        Debug.Log($"수집된 RoomNode 수: {rooms.Count}");
     }
 
     private void Update()
