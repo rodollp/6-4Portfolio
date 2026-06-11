@@ -10,22 +10,32 @@ public class Creature : MonoBehaviour
     [Header(" 공격력")]
     [SerializeField] protected int atk = 10;
 
-    
+
 
     protected int currentHp;
     public string Name => _name;
     public int MaxHp => maxHp;
-    public int CurrentHp => currentHp;
+
+    public int CurrentHp
+    {
+        get => currentHp;
+        protected set
+        {
+            currentHp = Mathf.Clamp(value, 0, maxHp);
+        }
+    }
     public int Atk => atk;
 
     protected virtual void Awake()
     {
-        currentHp = maxHp;
+        maxHp = Mathf.Max(1, maxHp);
+
+        CurrentHp = maxHp;
     }
 
     public virtual void TakeDamage(int damage)
     {
-        currentHp -= damage;
+        CurrentHp -= damage;
         Debug.Log($"{Name}이(가) {damage}만큼 피해를 입었습니다");
         if (currentHp <= 0)
         {
@@ -37,7 +47,7 @@ public class Creature : MonoBehaviour
 
     protected virtual void Die()
     {
-        currentHp = 0;
+        CurrentHp = 0;
         Debug.Log($"{Name} 사망");
         Destroy(gameObject);
 

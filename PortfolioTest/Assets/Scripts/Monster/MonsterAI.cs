@@ -63,36 +63,31 @@ public class MonsterAI : MonoBehaviour
 
     protected virtual bool CanSeePlayer()
     {
-        Vector3 toPlayer =
-            (player.position - eyePoint.position).normalized;
+        Vector3 toPlayer =(player.position - eyePoint.position).normalized;
 
-        float distance =
-            (player.position - transform.position).sqrMagnitude;
+        float distance =(player.position - transform.position).sqrMagnitude;
 
         if (distance > detectRange * detectRange)
             return false;
 
-        float dot =
-            Vector3.Dot(eyePoint.forward, toPlayer);
+        float dot =Vector3.Dot(eyePoint.forward, toPlayer);
 
-        float limitDot =
-            Mathf.Cos(sightAngle * 0.5f * Mathf.Deg2Rad);
+        float limitDot =Mathf.Cos(sightAngle * 0.5f * Mathf.Deg2Rad);
 
         return dot >= limitDot;
     }
+
+
+
     protected virtual bool IsInAttackRange()
     {
-        float distance =
-            (player.position - transform.position).sqrMagnitude;
+        float distance =(player.position - transform.position).sqrMagnitude;
 
         return distance < attackRange * attackRange;
     }
     protected virtual void MoveToPlayer()
     {
-        transform.position +=
-            transform.forward *
-            moveSpeed *
-            Time.deltaTime;
+        transform.position += transform.forward * moveSpeed * Time.deltaTime;
     }
     protected virtual void LookPlayer()
     {
@@ -140,8 +135,7 @@ public class MonsterAI : MonoBehaviour
 
         float exitAttackRange = attackRange + 1f;
 
-        float distance =
-            (player.position - transform.position).sqrMagnitude;
+        float distance =(player.position - transform.position).sqrMagnitude;
 
         if (distance > exitAttackRange * exitAttackRange)
         {
@@ -151,7 +145,7 @@ public class MonsterAI : MonoBehaviour
 
     protected virtual void MonsterAttack()
     {
-        MonsterStatus status = GetComponent<MonsterStatus>();
+        Monster status = GetComponent<Monster>();
 
         attackTimer += Time.deltaTime;
 
@@ -188,25 +182,15 @@ public class MonsterAI : MonoBehaviour
         // 시야각 좌/우 선
         // =========================
 
-        Vector3 leftDir =
-            Quaternion.Euler(0, -sightAngle * 0.5f, 0)
-            * eyePoint.forward;
+        Vector3 leftDir =Quaternion.Euler(0, -sightAngle * 0.5f, 0) * eyePoint.forward;
 
-        Vector3 rightDir =
-            Quaternion.Euler(0, sightAngle * 0.5f, 0)
-            * eyePoint.forward;
+        Vector3 rightDir =Quaternion.Euler(0, sightAngle * 0.5f, 0) * eyePoint.forward;
 
         Gizmos.color = Color.cyan;
 
-        Gizmos.DrawLine(
-            eyePoint.position,
-            eyePoint.position + leftDir * detectRange
-        );
+        Gizmos.DrawLine(eyePoint.position, eyePoint.position + leftDir * detectRange);
 
-        Gizmos.DrawLine(
-            eyePoint.position,
-            eyePoint.position + rightDir * detectRange
-        );
+        Gizmos.DrawLine(eyePoint.position, eyePoint.position + rightDir * detectRange);
 
         // =========================
         // 플레이어 방향 확인
@@ -216,10 +200,7 @@ public class MonsterAI : MonoBehaviour
         {
             Gizmos.color = Color.green;
 
-            Gizmos.DrawLine(
-                eyePoint.position,
-                player.position
-            );
+            Gizmos.DrawLine(eyePoint.position, player.position);
         }
 
         // =========================
@@ -228,9 +209,6 @@ public class MonsterAI : MonoBehaviour
 
         Gizmos.color = Color.blue;
 
-        Gizmos.DrawLine(
-            eyePoint.position,
-            eyePoint.position + eyePoint.forward * detectRange
-        );
+        Gizmos.DrawLine(eyePoint.position, eyePoint.position + eyePoint.forward * detectRange);
     }
 }

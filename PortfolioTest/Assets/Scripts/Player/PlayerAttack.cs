@@ -43,16 +43,14 @@ public class PlayerAttack : MonoBehaviour
             return;
 
         //맞았으면 이놈이 몬스터스테이터스를 가지고 있는지
-        MonsterStatus status =
-            hit.transform.GetComponent<MonsterStatus>();
+        Monster monster = hit.transform.GetComponent<Monster>();
 
-        if (status == null)
+        if (monster == null)
             return;
 
-        status.TakeDamage(playerStatus.Atk);
+        monster.TakeDamage(playerStatus.Atk);
 
-        Rigidbody rb =
-            hit.transform.GetComponent<Rigidbody>();
+        Rigidbody rb = hit.transform.GetComponent<Rigidbody>();
 
         KnockBack(rb);
     }
@@ -62,9 +60,7 @@ public class PlayerAttack : MonoBehaviour
         if (rb == null)
             return;
 
-        Vector3 dir =
-            (rb.transform.position - transform.position)
-            .normalized;
+        Vector3 dir = (rb.transform.position - transform.position).normalized;
 
         Vector3 push = dir * attackForce;
         push.y = 1f;
@@ -80,27 +76,17 @@ public class PlayerAttack : MonoBehaviour
     {
         // 플레이어 정면
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(
-            transform.position,
-            transform.position + transform.forward * 3f);
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 3f);
 
         // SphereCast 범위
         Gizmos.color = Color.red;
 
-        Vector3 endPos =
-            transform.position +
-            transform.forward * attackDistance;
+        Vector3 endPos =transform.position + transform.forward * attackDistance;
 
-        Gizmos.DrawWireSphere(
-            transform.position,
-            radius);
+        Gizmos.DrawWireSphere(transform.position,radius);
 
-        Gizmos.DrawWireSphere(
-            endPos,
-            radius);
+        Gizmos.DrawWireSphere(endPos,radius);
 
-        Gizmos.DrawLine(
-            transform.position,
-            endPos);
+        Gizmos.DrawLine(transform.position,endPos);
     }
 }

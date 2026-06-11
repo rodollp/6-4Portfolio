@@ -6,12 +6,13 @@ public class PlayerStatus : Creature
     [SerializeField] private int exp = 0;
     [SerializeField] private int expToNext = 10;
     [SerializeField] private int money = 0;
-
+    [SerializeField] private int healAmount = 30;
     public int Level => level;
     public int Exp => exp;
     public int ExpToNext => expToNext;
-
+    public int HealAmount => healAmount;    
     public int Money => money;
+
     protected override void Awake()
     {
         base.Awake();
@@ -39,22 +40,36 @@ public class PlayerStatus : Creature
         expToNext += 5;
 
         maxHp += 3;
-        currentHp += 3;
+        CurrentHp += 3;
         atk += 3;
 
         Debug.Log("Level Up! " + level);
     }
 
+    public void Heal(int amount)
+    {
+        CurrentHp += amount;
+        Debug.Log($"{Name}은 {amount}만큼 회복했습니다. 현재 체력 : {CurrentHp}");
+    }
+
+    public void Heal()
+    {
+        Heal(HealAmount);
+    }
+
+    public void FullHeal()
+    {
+        CurrentHp = maxHp;
+        Debug.Log("체력을 모두 회복!");
+    }
+
     public override void TakeDamage(int damage)
     {
-        currentHp -= damage;
+        CurrentHp -= damage;
 
-        if (currentHp < 0)
-            currentHp = 0;
+        Debug.Log($"플레이어가 {damage} 피해를 받음 / 남은 HP: {CurrentHp}");
 
-        Debug.Log($"플레이어가 {damage} 피해를 받음 / 남은 HP: {currentHp}");
-
-        if (currentHp <= 0)
+        if (CurrentHp <= 0)
         {
             Die();
         }

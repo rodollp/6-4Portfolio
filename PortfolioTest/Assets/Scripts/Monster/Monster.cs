@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 public struct Reward
@@ -12,15 +13,18 @@ public struct Reward
 
 
 
-public class MonsterStatus : Creature
+public class Monster : Creature
 {
 
     [Header("몬스터 처치 시 드랍")]
     [SerializeField] Reward reward;
-
+    [SerializeField] public GameObject[] dropItem;
+    
+    
+    
     public Reward Reward => reward;
 
-    public event Action<MonsterStatus> OnDead;
+    public event Action<Monster> OnDead;
 
     public bool IsDead = false;
     public override void TakeDamage(int damage)

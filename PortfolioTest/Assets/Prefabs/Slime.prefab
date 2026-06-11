@@ -180,7 +180,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2190410313456194085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c80d38700c7f9f4da02aab2f86f0766, type: 3}
+  m_Script: {fileID: 11500000, guid: 514e37b445a6b6840b13f5e689d91d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uC2AC\uB77C\uC784"
@@ -189,6 +189,9 @@ MonoBehaviour:
   reward:
     _gold: 100
     _expReward: 10
+  dropItem:
+  - {fileID: 1884809130473741295, guid: 75c45a7cfb99af44cba13378c181601b, type: 3}
+  IsDead: 0
 --- !u!114 &5813202544492691727
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -124,7 +124,9 @@ GameObject:
   - component: {fileID: 5706601061590182995}
   - component: {fileID: 2236141702065354884}
   - component: {fileID: 689432631940140831}
-  - component: {fileID: 666813404229581423}
+  - component: {fileID: 1741871617000202926}
+  - component: {fileID: 4240671405192901755}
+  - component: {fileID: 5718571247285864117}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -247,7 +249,8 @@ MonoBehaviour:
   exp: 0
   expToNext: 10
   money: 0
---- !u!114 &666813404229581423
+  healAmount: 30
+--- !u!114 &1741871617000202926
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -256,11 +259,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 3319958711531730248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd121bd21b1248e4da2096c1e95edf04, type: 3}
+  m_Script: {fileID: 11500000, guid: c9077453912b7054c9fb746b686bef1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageManager: {fileID: 0}
-  control: 0
+  inventory: {fileID: 4240671405192901755}
+--- !u!114 &4240671405192901755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3319958711531730248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1d35e44665cb64f8e3cf2b429b5bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 689432631940140831}
+--- !u!114 &5718571247285864117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3319958711531730248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5d8fbdc876bcc4aa65357941b65442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 4240671405192901755}
 --- !u!1 &4625887304142536430
 GameObject:
   m_ObjectHideFlags: 0

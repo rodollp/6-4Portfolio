@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Assets.Scripts;
 
+
 public class SpawnManager : MonoBehaviour
 {
     [Header("섹터 프리펩")]
@@ -13,11 +14,12 @@ public class SpawnManager : MonoBehaviour
     public StageManager stageManager;
     [Header("스테이지 데이터 넣기")]
     public List<StageData> stages;
-
+    [Header("전투 이벤트 연결")]
     [SerializeField] BattleManager battleManager;
 
-
+    //rooms의 위치
     private List<Transform> rooms = new List<Transform>();
+
     private void Awake()
     {
         CollectRooms();
@@ -56,6 +58,14 @@ public class SpawnManager : MonoBehaviour
         return point;
     }
 
+    void SpawnMonsterGetEvent(Monster monster)
+    {
+        if (monster == null) return;
+        stageManager.AddMonster(monster);
+        monster.OnDead += battleManager.MonsterDeadEvent;
+        monster.OnDead += stageManager.OnMonsterDead;
+    }
+
     public void Spawn(int stage)
     {
 
@@ -80,10 +90,10 @@ public class SpawnManager : MonoBehaviour
 
             GameObject boss = Instantiate(data.boss, point.position, Quaternion.identity, monstersParent);
 
-            MonsterStatus bossMonster = boss.GetComponent<MonsterStatus>();
-            stageManager.AddMonster(bossMonster);
-            bossMonster.OnDead += battleManager.TakeReward;
-            bossMonster.OnDead += stageManager.OnMonsterDead;
+            Monster bossMonster = boss.GetComponent<Monster>();
+           
+            SpawnMonsterGetEvent(bossMonster);
+
 
             return;
         }
@@ -93,17 +103,15 @@ public class SpawnManager : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            GameObject monster = data.monsters[Random.Range(0, data.monsters.Count)];
-
             Transform point = GetRandomSpawnPoint();
 
+            GameObject monster = data.monsters[Random.Range(0, data.monsters.Count)];
+
+
             GameObject mon = Instantiate(monster, point.position, Quaternion.identity, monstersParent);
-            MonsterStatus monstatus = mon.GetComponent<MonsterStatus>();
+            Monster spawnMonster = mon.GetComponent<Monster>();
 
-            stageManager.AddMonster(monstatus);
-            monstatus.OnDead += battleManager.TakeReward;
-            monstatus.OnDead += stageManager.OnMonsterDead;
-
+            SpawnMonsterGetEvent(spawnMonster);
         }
 
 

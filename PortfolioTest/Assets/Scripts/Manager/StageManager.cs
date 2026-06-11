@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 public class StageManager : MonoBehaviour
 {
     [Header("스폰 매니저 연결")]
@@ -12,15 +13,31 @@ public class StageManager : MonoBehaviour
     [SerializeField] Transform player;
 
     [Header("현재 살아있는 몬스터")]
-    public List<MonsterStatus> aliveMonsters = new();
+    public List<Monster> aliveMonsters = new();
 
+
+    bool canNextStage = false;
     void Start()
     {
         StartStage(stageIndex);
     }
 
+    private void Update()
+    {
+        if (canNextStage == false) return;
+        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            canNextStage = false;
+            Debug.Log("스테이지 시작!");
+            StartStage(stageIndex + 1);
+
+        }
+    }
+
     public void StartStage(int index)
     {
+        canNextStage = false ;
+
         stageIndex = index;
 
         aliveMonsters.Clear();
@@ -37,24 +54,24 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public List<MonsterStatus> GetAliveMonsters()
+    public List<Monster> GetAliveMonsters()
     {
         aliveMonsters.RemoveAll(m => m == null);
         return aliveMonsters;
     }
-    public void AddMonster(MonsterStatus monster)
+    public void AddMonster(Monster monster)
     {
         aliveMonsters.Add(monster);
     }
 
-    public MonsterStatus ShortMagnitude(Vector3 position)
+    public Monster ShortMagnitude(Vector3 position)
     {
-        MonsterStatus shortmag = null;
+        Monster shortmag = null;
         float shortmagDist = float.MaxValue;
 
-        foreach (MonsterStatus monster in aliveMonsters)
+        foreach (Monster monster in aliveMonsters)
         {
-            if(monster == null) continue;   
+            if (monster == null) continue;
 
             float dist = (monster.transform.position - position).sqrMagnitude;
             if (dist < shortmagDist)
@@ -66,24 +83,24 @@ public class StageManager : MonoBehaviour
         return shortmag;
 
     }
-    public void OnMonsterDead(MonsterStatus monster)
+    public void OnMonsterDead(Monster monster)
     {
-        if(monster ==null) return;
-        if(monster.IsDead == false) return;
+        if (monster == null) return;
+        if (monster.IsDead == false) return;
 
         aliveMonsters.Remove(monster);
 
         if (aliveMonsters.Count <= 0)
         {
-            if(stageIndex >= spawnManager.stages.Count-1)
+            if (stageIndex >= spawnManager.stages.Count - 1)
             {
                 Debug.Log("게임 클리어");
                 return;
             }
 
-            Debug.Log($"스테이지 클리어! 다음 스테이지 : {stageIndex+1}");
-            
-            StartStage(stageIndex + 1);
+            Debug.Log($"스테이지 클리어! 다음 스테이지 : {stageIndex + 1}");
+            Debug.Log($"다음 스테이지로 넘어가시겠습니까? (N키를 눌러서 스테이지 이동) ");
+            canNextStage = true;
         }
     }
 }
