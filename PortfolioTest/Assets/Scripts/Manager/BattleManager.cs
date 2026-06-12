@@ -26,8 +26,8 @@ public class BattleManager : MonoBehaviour
         GameObject itemPrefab = monster.dropItem[index];
 
         if (itemPrefab == null) return;
-
-        Instantiate(itemPrefab,monster.transform.position,Quaternion.identity);
+        Vector3 spawnPoint = monster.transform.position + Vector3.up * 1f;
+        Instantiate(itemPrefab, spawnPoint, Quaternion.identity);
         Debug.Log("아이템 드랍!");
     }
 }

@@ -191,6 +191,7 @@ MonoBehaviour:
     _expReward: 10
   dropItem:
   - {fileID: 1884809130473741295, guid: 75c45a7cfb99af44cba13378c181601b, type: 3}
+  - {fileID: 1884809130473741295, guid: 60fa03737f7fcbe4b95274d257038547, type: 3}
   IsDead: 0
 --- !u!114 &5813202544492691727
 MonoBehaviour:

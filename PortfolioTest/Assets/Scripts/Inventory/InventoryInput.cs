@@ -13,5 +13,9 @@ public class InventoryInput : MonoBehaviour
         {
             inventory.UseItem(ItemType.Potion);
         }
+        if(Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            inventory.UseItem(ItemType.Weapon);
+        }
     }
 }

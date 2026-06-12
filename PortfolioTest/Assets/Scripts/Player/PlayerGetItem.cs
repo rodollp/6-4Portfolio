@@ -29,8 +29,7 @@ public class PlayerGetItem : MonoBehaviour
 
         foreach (Item item in items)
         {
-            float dist =
-                (item.transform.position - transform.position).sqrMagnitude;
+            float dist = (item.transform.position - transform.position).sqrMagnitude;
 
             if (dist < pickUpRange * pickUpRange && dist < closestDist)
             {

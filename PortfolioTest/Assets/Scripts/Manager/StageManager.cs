@@ -9,6 +9,7 @@ public class StageManager : MonoBehaviour
     [Header("현재 스테이지")]
     public int stageIndex = 0;
 
+    [Header("시작 위치")]
     [SerializeField] Transform startPoint;
     [SerializeField] Transform player;
 
@@ -30,10 +31,11 @@ public class StageManager : MonoBehaviour
             canNextStage = false;
             Debug.Log("스테이지 시작!");
             StartStage(stageIndex + 1);
-
+            
         }
     }
 
+    
     public void StartStage(int index)
     {
         canNextStage = false ;
@@ -44,11 +46,17 @@ public class StageManager : MonoBehaviour
 
         Rigidbody rb = player.GetComponent<Rigidbody>();
 
+        
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         rb.position = startPoint.position;
         rb.rotation = startPoint.rotation;
+
+        PlayerStatus p = player.GetComponent<PlayerStatus>();
+        
+        p.FullHeal();
+
         // 스테이지 시작 시 스폰 요청
         spawnManager.Spawn(stageIndex);
     }

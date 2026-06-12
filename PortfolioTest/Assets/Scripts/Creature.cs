@@ -24,7 +24,15 @@ public class Creature : MonoBehaviour
             currentHp = Mathf.Clamp(value, 0, maxHp);
         }
     }
-    public int Atk => atk;
+    public int Atk
+    {
+        get => atk;
+
+        protected set
+        {
+            atk = Mathf.Clamp(value, 0, int.MaxValue);
+        }
+    }
 
     protected virtual void Awake()
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -51,6 +52,11 @@ public class Inventory : MonoBehaviour
         Debug.Log("아이템 없음");
     }
 
+    public bool CanBuy(int price)
+    {
+        return player.Money > price;
+    }
+    
     public void UseItem(ItemType type)
     {
         for (int i = 0; i < items.Count; i++)
@@ -62,9 +68,14 @@ public class Inventory : MonoBehaviour
                 {
                     player.Heal(item.ItemData.Value);
                 }
+                else if(type == ItemType.Weapon)
+                {
+                    player.GrowForce(item.ItemData.Value);
+                }
+
                 item.Count--;
                 Debug.Log($"{item.ItemData.ItemName}사용!, 수량 : {item.Count}");
-                if (item.Count <= 0 )
+                if (item.Count <= 0)
                 {
                     items.RemoveAt(i);
                 }

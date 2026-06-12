@@ -33,6 +33,17 @@ public class PlayerStatus : Creature
         money += amount;
     }
 
+    public bool UseGold(int amount)
+    {
+        if (money < amount)
+        {
+            Debug.Log("돈이 부족합니다");
+            return false;
+        }
+
+        money -= amount;
+        return true;
+    }
     void LevelUp()
     {
         level++;
@@ -52,6 +63,12 @@ public class PlayerStatus : Creature
         Debug.Log($"{Name}은 {amount}만큼 회복했습니다. 현재 체력 : {CurrentHp}");
     }
 
+    public void GrowForce(int amount)
+    {
+        Atk += amount;
+        Debug.Log($"{Name}의 공격력이 {amount}만큼 올랐습니다 . 현재 공격력:  {Atk}");
+    }
+
     public void Heal()
     {
         Heal(HealAmount);
@@ -60,7 +77,7 @@ public class PlayerStatus : Creature
     public void FullHeal()
     {
         CurrentHp = maxHp;
-        Debug.Log("체력을 모두 회복!");
+        Debug.Log("스테이지 시작으로 인한 체력 회복!");
     }
 
     public override void TakeDamage(int damage)
