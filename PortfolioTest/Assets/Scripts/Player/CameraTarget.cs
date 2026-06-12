@@ -21,14 +21,14 @@ public class CameraTarget : MonoBehaviour
     [SerializeField] float height = 1.5f;
 
     // Yaw = 좌우 회전 (수평 회전)
-    float yaw;
+    float turnLR;
 
     // Pitch = 상하 회전 (위/아래)
-    float pitch;
+    float turnUpDown;
 
     private void Start()
     {
-        // 마우스 커서 고정 (FPS/TPS 기본 세팅)
+        // 마우스 커서 고정
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -40,19 +40,19 @@ public class CameraTarget : MonoBehaviour
             // 마우스 이동량 (프레임 기준)
             Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
-            // 좌우 회전 (Yaw)
-            yaw += mouseDelta.x * mouseSensitivity;
+            // 좌우 회전
+            turnLR += mouseDelta.x * mouseSensitivity;
 
-            // 상하 회전 (Pitch)
-            pitch -= mouseDelta.y * mouseSensitivity;
+            // 상하 회전
+            turnUpDown -= mouseDelta.y * mouseSensitivity;
 
             // 위아래 각도 제한 (고개 꺾임 방지)
-            pitch = Mathf.Clamp(pitch, -35f, 60f);
+            turnUpDown = Mathf.Clamp(turnUpDown, -35f, 60f);
         }
 
         // ===== 2. 회전값 생성 =====
-        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
-        player.rotation = Quaternion.Euler(0,yaw,0);
+        Quaternion rotation = Quaternion.Euler(turnUpDown, turnLR, 0);
+        player.rotation = Quaternion.Euler(0,turnLR,0);
 
         // ===== 3. 카메라 뒤로 밀기 =====
         Vector3 offset = rotation * new Vector3(0, 0, -distance);
