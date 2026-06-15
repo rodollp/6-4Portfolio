@@ -207,10 +207,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 6739904211450367984, guid: d9013c3eefdbbb14db870c007fe4e6ef, type: 3}
   eyePoint: {fileID: 8862828568718935087}
-  moveSpeed: 3
-  sightAngle: 60
-  detectRange: 10
-  attackRange: 2
+  moveSpeed: 7
+  sightAngle: 100
+  detectRange: 12
+  attackRange: 4
 --- !u!1 &3248917701026688357
 GameObject:
   m_ObjectHideFlags: 0
